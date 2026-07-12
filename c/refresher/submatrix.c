@@ -6,18 +6,18 @@ int main()
 
     for (i = 0; i < 2; i++)
         for (j = 0; j < 2; j++)
-            scanf("%d\n", &a[i][j]);
+            scanf("%d", &a[i][j]);
 
     for (i = 0; i < 2; i++)
         for (j = 0; j < 2; j++)
-            scanf("%d\n", &b[i][j]);
+            scanf("%d", &b[i][j]);
 
     for (i = 0; i < 2; i++)
     {
 
         for (j = 0; j < 2; j++)
         {
-            result[i][j] = a[i][j] + b[i][j];
+            result[i][j] = a[i][j] - b[i][j];
             printf("the addition of values %d", result[i][j]);
         }
         printf("\n");
