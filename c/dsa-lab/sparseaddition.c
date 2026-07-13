@@ -24,17 +24,6 @@ void compact_matrix(int matrix[MAX][MAX], int rows, int cols, int sparse[MAX][3]
         {
             if (matrix[i][j] != 0)
             {
-
-                // 0,0 is for the number of rows, cols and numebr of non zero elements.
-
-                // */ 1,0 - rows col   value
-                //         0
-                //         1  i;   j;  a[i][j];
-                //         2
-                //          3
-
-                
-
                 sparse[sparsecounter][0] = i;
                 sparse[sparsecounter][1] = j;
                 sparse[sparsecounter][2] = matrix[i][j];
@@ -42,10 +31,82 @@ void compact_matrix(int matrix[MAX][MAX], int rows, int cols, int sparse[MAX][3]
             }
         }
     }
-     sparse[0][0] = rows;
-                sparse[0][1] = cols;
-                sparse[0][2] = sparsecounter - 1;
+    sparse[0][0] = rows;
+    sparse[0][1] = cols;
+    sparse[0][2] = sparsecounter - 1;
 }
+
+void mergesparse(int sparsea[MAX][3], int sparseb[MAX][3], int addedsparse[MAX][3])
+{
+    if (sparsea[0][0] == sparseb[0][0] && sparsea[0][1] == sparseb[0][1])
+    {
+        int i = 1; // walks sparsea's triplets
+        int j = 1; // walks sparseb's triplets
+        int k = 1; // where to write the next triplet into addedsparse
+
+        // MAIN MERGE LOOP — runs as long as both A and B still have triplets left to compare
+        while (i <= sparsea[0][2] && j <= sparseb[0][2])
+        {
+            // CASE 1: A's position comes first (smaller row, or same row + smaller column)
+            if (sparsea[i][0] < sparseb[j][0] || (sparsea[i][0] == sparseb[j][0] && sparsea[i][1] < sparseb[j][1]))
+            {
+                addedsparse[k][0] = sparsea[i][0];
+                addedsparse[k][1] = sparsea[i][1];
+                addedsparse[k][2] = sparsea[i][2];
+                i++;
+                k++;
+            }
+            // CASE 2: B's position comes first (mirror image of Case 1)
+            else if (sparsea[i][0] > sparseb[j][0] || (sparsea[i][0] == sparseb[j][0] && sparsea[i][1] > sparseb[j][1]))
+            {
+                addedsparse[k][0] = sparseb[j][0];
+                addedsparse[k][1] = sparseb[j][1];
+                addedsparse[k][2] = sparseb[j][2];
+                j++;
+                k++;
+            }
+            // CASE 3: TIE — same row AND same column in both A and B
+            else
+            {
+                addedsparse[k][0] = sparsea[i][0];
+                addedsparse[k][1] = sparsea[i][1];
+                addedsparse[k][2] = sparsea[i][2] + sparseb[j][2];
+                i++;
+                j++;
+                k++;
+            }
+        }
+
+        // LEFTOVER LOOP #1 — whatever's still left in A gets copied straight over
+        while (i <= sparsea[0][2])
+        {
+            addedsparse[k][0] = sparsea[i][0];
+            addedsparse[k][1] = sparsea[i][1];
+            addedsparse[k][2] = sparsea[i][2];
+            i++;
+            k++;
+        }
+
+        // LEFTOVER LOOP #2 — whatever's still left in B gets copied straight over
+        while (j <= sparseb[0][2])
+        {
+            addedsparse[k][0] = sparseb[j][0];
+            addedsparse[k][1] = sparseb[j][1];
+            addedsparse[k][2] = sparseb[j][2];
+            j++;
+            k++;
+        }
+
+        // HEADER — same k-1 trick as compact_matrix
+        addedsparse[0][0] = sparsea[0][0];
+        addedsparse[0][1] = sparsea[0][1];
+        addedsparse[0][2] = k - 1;
+    }
+    else
+    {
+        printf("Cannot add: matrices have different dimensions\n");
+    }
+} // <-- this closing brace was missing, now added: closes mergesparse properly
 
 int main()
 {
@@ -68,19 +129,11 @@ int main()
     printf("Sparse B:\n");
     for (int i = 0; i <= sparseB[0][2]; i++)
         printf("%d %d %d\n", sparseB[i][0], sparseB[i][1], sparseB[i][2]);
-}
 
+    int sparseResult[MAX][3];
+    mergesparse(sparseA, sparseB, sparseResult);
 
-void mergesparse(int sparsea[MAX][3], int sparseb[MAX][3], int addedsparse[MAX][3]) { 
-    if (sparsea[0][0] == sparseb[0][0] && sparsea[0][1] == sparseb[0][1]) {
-    int i = 1;  // walks sparsea's triplets
-int j = 1;  // walks sparseb's triplets
-int k = 1;  // where to write the next triplet into addedsparse
-
-
-
-
-} else {
-    printf("Cannot add: matrices have different dimensions\n");
-}
+    printf("Sparse Result (A + B):\n");
+    for (int i = 0; i <= sparseResult[0][2]; i++)
+        printf("%d %d %d\n", sparseResult[i][0], sparseResult[i][1], sparseResult[i][2]);
 }
