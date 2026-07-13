@@ -18,7 +18,7 @@ int main()
         for (j = 0; j < 2; j++)
         {
             result[i][j] = a[i][j] - b[i][j];
-            printf("the addition of values %d", result[i][j]);
+            printf(" %d", result[i][j]);
         }
         printf("\n");
     }
