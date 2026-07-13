@@ -49,6 +49,9 @@ void compart_matrix(int matrix[MAX][MAX], int rows, int cols, int sparse[MAX][3]
     }
 }
 
-
+int main() { 
+    accept_matrix(my_matrix, 3, 3);
+    
+}
 
 
