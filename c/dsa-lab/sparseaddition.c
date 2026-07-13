@@ -12,17 +12,35 @@ void accept_matrix(int a[MAX][MAX], int rows, int cols) {
         }
 
     }
+}
 
 
-void compart_matrix()  { 
+void compart_matrix(int matrix[MAX][MAX], int rows, int cols, int sparse[MAX][3])  { 
     int sparsecounter = 1; 
 
 
     for(int i = 0; i<rows; i++) { 
-        for (int j = 0; j<coloumns; j++) { 
-            if([a[i][j] != 0 ) { 
-                [k][0] = i; 
-                
+        for (int j = 0; j<cols; j++) { 
+            if(matrix[i][j] != 0 ) { 
+
+
+
+// 0,0 is for the number of rows, cols and numebr of non zero elements. 
+
+// */ 1,0 - rows col   value
+//         0   
+//         1  i;   j;  a[i][j];
+//         2
+ //          3
+
+
+ 
+
+            sparse[sparsecounter][0] = i;   
+            sparse[sparsecounter][1] = j; 
+            sparse[sparsecounter][2] = matrix[i][j];
+            sparsecounter++;
+
 
 
             }
@@ -33,4 +51,4 @@ void compart_matrix()  {
 
 
 
-}
+
