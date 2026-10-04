@@ -88,7 +88,15 @@ else if (previous == NULL) {
 
 
 
+int count = 0;
+struct student *current = head;
 
+while (current != NULL) {
+    count++;
+    current = current->next;
+}
+
+printf("Total students: %d\n", count);
 
 
 } 
